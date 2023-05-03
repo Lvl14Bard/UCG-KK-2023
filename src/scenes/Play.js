@@ -5,14 +5,21 @@ class Play extends Phaser.Scene {
 
     preload() {
         // load images/tile sprites
-        this.load.image('rocket', './assets/rocket.png');
-        this.load.image('spaceship', './assets/spaceship.png');
-        this.load.image('starfield', './assets/starfield.png');
+        this.load.image('cat_paw', './assets/cat_paw.png');
+        this.load.image('cat_photo', './assets/cat_photo.png');
+        this.load.image('glass_ball', './assets/glass_ball.png');
+        this.load.image('knob', './assets/knob.png');
+        this.load.image('medal', './assets/medal.png');
+        this.load.image('pill_bottle', './assets/pill_bottle.png');
+        this.load.image('red_ball', './assets/red_ball.png');
+        this.load.image('shelf_1', './assets/shelf_1.png');
+        this.load.image('wine_bottle', './assets/wine_bottle.png');
         // load spritesheet
-        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        //this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
 
     create() {
+        /*
         // place tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
 
@@ -77,10 +84,21 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or ← to Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+        */
+        this.matter.world.setBounds(0, 0, 600, 800, 32, true, true, true, true);
+
+        this.cat_paw = this.matter.add.image(300, 0, 'cat_paw');
+        this.cat_paw.scaleX = 0.5;
+        this.cat_paw.scaleY = 0.5;
+        this.matter.add.pointerConstraint();
+
+        this.shelf_1 = this.matter.add.image(300, 150, 'shelf_1');
+        this.shelf_2 = this.matter.add.image(350, 300, 'shelf_1');
     }
 
     update() {
         // check key input for restart / menu
+        /*
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
@@ -141,5 +159,8 @@ class Play extends Phaser.Scene {
         this.scoreLeft.text = this.p1Score; 
         
         this.sound.play('sfx_explosion');
+        */
+        const pointer = this.input.activePointer;
       }
+      
 }
