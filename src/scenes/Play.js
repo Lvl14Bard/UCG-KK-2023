@@ -14,11 +14,24 @@ class Play extends Phaser.Scene {
         this.load.image('red_ball', './assets/red_ball.png');
         this.load.image('shelf_1', './assets/shelf_1.png');
         this.load.image('wine_bottle', './assets/wine_bottle.png');
+        this.load.image('untitled', './assets/untitled.png');
         // load spritesheet
         //this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
 
     create() {
+        let menuConfig = {
+            fontFamily: 'Franklin Gothic Medium',
+            fontSize: '28px',
+            backgroundColor: '#000000',
+            color: '#facade',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0
+        }
         /*
         // place tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
@@ -85,81 +98,49 @@ class Play extends Phaser.Scene {
             this.gameOver = true;
         }, null, this);
         */
-        this.matter.world.setBounds(0, 0, 600, 800, 32, true, true, true, true);
-
-        this.cat_paw = this.matter.add.image(300, 0, 'cat_paw');
+        this.matter.world.setBounds(0, 0, 600, 800, 32, true, true, false, true);
+        //this.background = this.matter.add.image(-100, -100, 'untitled').setSensor(true).setStatic(true);
+        this.cat_paw = this.matter.add.image(300, 0, 'cat_paw').setMass(50).setFriction(1).setBounce(1);
         this.cat_paw.scaleX = 0.5;
         this.cat_paw.scaleY = 0.5;
         this.matter.add.pointerConstraint();
+        this.wine = this.matter.add.image(10, 0, 'wine_bottle').setMass(50).setFriction(1).setBounce(1);
+        this.red = this.matter.add.image(5, 0, 'red_ball').setMass(50).setFriction(1).setBounce(1);
+        this.med = this.matter.add.image(15, 0, 'medal').setMass(50).setFriction(1).setBounce(1);
+        this.knob = this.matter.add.image(25, 0, 'knob').setMass(50).setFriction(1).setBounce(1);
+        this.pill = this.matter.add.image(35, 0, 'pill_bottle').setMass(50).setFriction(1).setBounce(1);
+        this.glass = this.matter.add.image(300, 0, 'glass_ball').setMass(50).setFriction(1).setBounce(1);
+        this.photo = this.matter.add.image(300, 0, 'cat_photo').setMass(50).setFriction(1).setBounce(1);
 
-        this.shelf_1 = this.matter.add.image(300, 150, 'shelf_1');
-        this.shelf_2 = this.matter.add.image(350, 300, 'shelf_1');
+        this.shelf_1 = this.matter.add.image(300, 150, 'shelf_1').setMass(100).setFriction(1);
+        this.shelf_2 = this.matter.add.image(350, 300, 'shelf_1').setMass(100).setFriction(1);
+
+        this.add.text(game.config.width/2, borderUISize - borderPadding, '^ THE UPWARD ABYSS ^', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, borderUISize - borderPadding + 60, 'IF A BURDEN RETURNS, \n SIMPLY CAST IT OUT AGAIN', menuConfig).setOrigin(0.5);
+        menuConfig.color = '#decafe';
     }
 
     update() {
-        // check key input for restart / menu
-        /*
-        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
-            this.scene.restart();
+        let menuConfig = {
+            fontFamily: 'Franklin Gothic Medium',
+            fontSize: '28px',
+            backgroundColor: '#000000',
+            color: '#facade',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 0
         }
-
-        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-            this.scene.start("menuScene");
+        //If no physics on screen, destroy
+        if(!(this.cameras.main.worldView.contains(this.cat_paw.x, this.cat_paw.y)||this.cameras.main.worldView.contains(this.wine.x, this.wine.y)
+                || this.cameras.main.worldView.contains(this.red.x, this.red.y) || this.cameras.main.worldView.contains(this.med.x, this.med.y) ||
+                this.cameras.main.worldView.contains(this.knob.x, this.knob.y) || this.cameras.main.worldView.contains(this.pill.x, this.pill.y) ||
+                this.cameras.main.worldView.contains(this.pill.x, this.pill.y) || this.cameras.main.worldView.contains(this.glass.x, this.glass.y) ||
+                this.cameras.main.worldView.contains(this.photo.x, this.photo.y))){
+                    this.add.text(game.config.width/2, game.config.height/2, 'YOU ARE FREE', menuConfig).setOrigin(0.5);
         }
-
-        this.starfield.tilePositionX -= 4;  // update tile sprite
-
-        if(!this.gameOver) {
-            this.p1Rocket.update();             // update p1
-             this.ship01.update();               // update spaceship (x3)
-            this.ship02.update();
-            this.ship03.update();
-        }
-
-        // check collisions
-        if(this.checkCollision(this.p1Rocket, this.ship03)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship03);
-        }
-        if (this.checkCollision(this.p1Rocket, this.ship02)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship02);
-        }
-        if (this.checkCollision(this.p1Rocket, this.ship01)) {
-            this.p1Rocket.reset();
-            this.shipExplode(this.ship01);
-        }
-    }
-
-    checkCollision(rocket, ship) {
-        // simple AABB checking
-        if (rocket.x < ship.x + ship.width && 
-            rocket.x + rocket.width > ship.x && 
-            rocket.y < ship.y + ship.height &&
-            rocket.height + rocket.y > ship. y) {
-                return true;
-        } else {
-            return false;
-        }
-    }
-
-    shipExplode(ship) {
-        // temporarily hide ship
-        ship.alpha = 0;                         
-        // create explosion sprite at ship's position
-        let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
-        boom.anims.play('explode');             // play explode animation
-        boom.on('animationcomplete', () => {    // callback after anim completes
-            ship.reset();                         // reset ship position
-            ship.alpha = 1;                       // make ship visible again
-            boom.destroy();                       // remove explosion sprite
-        });
-        // score add and repaint
-        this.p1Score += ship.points;
-        this.scoreLeft.text = this.p1Score; 
-        
-        this.sound.play('sfx_explosion');
-        */
         const pointer = this.input.activePointer;
       }
       

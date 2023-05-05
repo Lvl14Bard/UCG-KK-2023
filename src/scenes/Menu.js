@@ -31,12 +31,11 @@ class Menu extends Phaser.Scene {
         this.input.mouse.disableContextMenu();
 
         // show menu text
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'UNTITLED CAT GAME', menuConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2, 'KITTEN KAOS', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'BEYOND THIS DOOR IS A HORRIBLE MESS', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2, 'CAST YOUR BURDENS INTO THE UPWARD ABYSS', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#000';
         menuConfig.color = '#decafe';
-        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'CLICK TO START', menuConfig).setOrigin(0.5);
-
+        this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'CLICK TO OPEN THE DOOR', menuConfig).setOrigin(0.5);
         // define keys
         //keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         //keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
